@@ -419,7 +419,7 @@ export const dict: Record<Lang, Dict> = {
       name: "Carlos Valencia",
       role: "Integrations · AI Agents · ERP",
       pitch:
-        "Mechatronics Engineer building AI and automation that plugs into the enterprise systems where operations actually run. I turn messy business requests into systems that hold up on a bad connection, at 4am, on a delivery truck.",
+        "Mechatronics Engineer focused on AI, automation and system integration. I turn manual processes and ambiguous requirements into reliable solutions, connected to the platforms a business already runs on.",
       location: "Guadalajara, Mexico",
       languages: "Spanish (native) · English (B2)",
       ctaWork: "See the work",
@@ -515,7 +515,7 @@ export const dict: Record<Lang, Dict> = {
       name: "Carlos Valencia",
       role: "Integraciones · Agentes de IA · ERP",
       pitch:
-        "Ingeniero Mecatrónico que construye IA y automatización conectadas a los sistemas empresariales donde de verdad ocurre la operación. Convierto pedidos de negocio desordenados en sistemas que aguantan con mala señal, a las 4am, arriba de un camión de reparto.",
+        "Ingeniero Mecatrónico enfocado en IA, automatización e integración de sistemas. Convierto procesos manuales y requerimientos ambiguos en soluciones confiables, conectadas con las plataformas que el negocio ya usa.",
       location: "Guadalajara, México",
       languages: "Español (nativo) · Inglés (B2)",
       ctaWork: "Ver proyectos",

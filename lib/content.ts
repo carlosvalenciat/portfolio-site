@@ -149,7 +149,7 @@ const projectsEn: Project[] = [
       "A consolidated report that renders several hundred rows as an HTML table, converts it to PDF, injects signatures and merges everything into one document",
     ],
     stack: ["Power Apps", "Power Automate", "SharePoint", "Word/PDF", "Microsoft 365"],
-    role: "Built the canvas app, the SharePoint data model and the Power Automate flows, and wrote the technical documentation for handover and maintenance.",
+    role: "Sole developer. Designed and built the canvas app, the SharePoint data model and every Power Automate flow, then wrote the technical documentation — architecture, failure modes and a deployment checklist — so it could be maintained by someone else.",
     metric: { value: "~396", label: "rows rendered per consolidated report" },
   },
   {
@@ -307,7 +307,7 @@ const projectsEs: Project[] = [
       "Un reporte consolidado que renderiza varios cientos de filas como tabla HTML, la convierte a PDF, inyecta las firmas y combina todo en un solo documento",
     ],
     stack: ["Power Apps", "Power Automate", "SharePoint", "Word/PDF", "Microsoft 365"],
-    role: "Construí la app canvas, el modelo de datos en SharePoint y los flujos de Power Automate, y escribí la documentación técnica para entrega y mantenimiento.",
+    role: "Único desarrollador. Diseñé y construí la app canvas, el modelo de datos en SharePoint y todos los flujos de Power Automate, y escribí la documentación técnica —arquitectura, modos de falla y checklist de despliegue— para que otra persona pudiera mantenerla.",
     metric: { value: "~396", label: "filas por reporte consolidado" },
   },
   {

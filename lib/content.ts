@@ -153,6 +153,27 @@ const projectsEn: Project[] = [
     metric: { value: "~396", label: "rows rendered per consolidated report" },
   },
   {
+    id: "conversational-commerce",
+    title: "Conversational Commerce — WhatsApp to ERP",
+    kind: "AI Agents · Commerce",
+    year: "2025—2026",
+    summary:
+      "A chatbot that takes an order through WhatsApp and drives it all the way to a warehouse pick — writing to the ERP, not just answering questions.",
+    problem:
+      "Customers already ordered through WhatsApp. The conversation was the real interface; the ERP was downstream paperwork someone re-typed afterwards. Every order passed through a human transcription step that added delay and errors.",
+    built: [
+      "Botpress conversational flows over the WhatsApp Business Platform covering purchase, sales and support paths",
+      "An API-key authenticated webhook endpoint in the ERP that the bot calls — it resolves the picking type and bill of materials, confirms manufacturing orders, assigns warehouse locations, and produces the stock exit. A conversation ends in a physical delivery with nobody re-keying it",
+      "The warehouse side of the loop: response actions so an operator's confirmation flows back through the same path, plus callbacks out to n8n and a generated daily summary",
+      "Channel traceability, so an order carries where it came from and bot sales never blur into the branch's own numbers",
+      "The same capability built a second time in n8n, as conversational flows with memory and custom OpenAI agents against the same ERP endpoints",
+      "Message automation through the Meta API: WhatsApp notices and approved templates, driven by scheduled jobs and HTTP request nodes authenticating against several platforms",
+    ],
+    stack: ["Botpress", "WhatsApp Business API", "Meta API", "n8n", "OpenAI", "Odoo", "Python"],
+    role: "Second of five contributors on the webhook controller (43 of 117 commits). I owned the sales-bot path, the manufacturing-order and warehouse-location logic, the operator response actions and the n8n callbacks — and built the n8n + OpenAI variant of the same flow.",
+    metric: { value: "43", label: "commits · 2nd of 5 on the bot controller" },
+  },
+  {
     id: "ai-agents",
     title: "AI Agents & Business Automations",
     kind: "AI · Automation",
@@ -311,6 +332,27 @@ const projectsEs: Project[] = [
     metric: { value: "~396", label: "filas por reporte consolidado" },
   },
   {
+    id: "conversational-commerce",
+    title: "Comercio Conversacional — WhatsApp al ERP",
+    kind: "Agentes de IA · Comercio",
+    year: "2025—2026",
+    summary:
+      "Un chatbot que levanta un pedido por WhatsApp y lo lleva hasta la salida de almacén — escribiendo en el ERP, no solo respondiendo preguntas.",
+    problem:
+      "Los clientes ya pedían por WhatsApp. La conversación era la interfaz real; el ERP era papeleo que alguien recapturaba después. Cada pedido pasaba por una transcripción humana que sumaba demora y errores.",
+    built: [
+      "Flujos conversacionales en Botpress sobre WhatsApp Business Platform, cubriendo compra, venta y soporte",
+      "Un endpoint webhook en el ERP autenticado por API key que el bot invoca: resuelve el tipo de operación y la lista de materiales, confirma órdenes de manufactura, asigna ubicaciones de almacén y produce la salida de stock. Una conversación termina en una entrega física sin que nadie recapture nada",
+      "El lado del almacén del circuito: actions para que la confirmación del almacenista regrese por la misma vía, más callbacks hacia n8n y un resumen diario generado",
+      "Trazabilidad de canal, para que cada pedido cargue su origen y las ventas del bot nunca se confundan con las de la sucursal",
+      "La misma capacidad construida por segunda vez en n8n, como flujos conversacionales con memoria y agentes personalizados de OpenAI contra los mismos endpoints del ERP",
+      "Automatización de mensajería vía Meta API: avisos por WhatsApp y plantillas aprobadas, movidos por crones y nodos HTTP que autentican contra varias plataformas",
+    ],
+    stack: ["Botpress", "WhatsApp Business API", "Meta API", "n8n", "OpenAI", "Odoo", "Python"],
+    role: "Segundo de cinco contribuidores en el controlador webhook (43 de 117 commits). Fui dueño de la ruta del bot de ventas, la lógica de órdenes de manufactura y ubicaciones de almacén, las actions de respuesta del almacenista y los callbacks a n8n — y construí la variante en n8n + OpenAI del mismo flujo.",
+    metric: { value: "43", label: "commits · 2º de 5 en el controlador del bot" },
+  },
+  {
     id: "ai-agents",
     title: "Agentes de IA y Automatizaciones",
     kind: "IA · Automatización",
@@ -383,7 +425,7 @@ export const dict: Record<Lang, Dict> = {
       { value: "3+", label: "years building production systems" },
       { value: "90+", label: "custom ERP modules in the codebase" },
       { value: "285", label: "commits as 2nd contributor on the ERP monorepo" },
-      { value: "9", label: "shipped projects documented as case studies" },
+      { value: "10", label: "shipped projects documented as case studies" },
     ],
     work: {
       title: "Selected work",
@@ -426,11 +468,11 @@ export const dict: Record<Lang, Dict> = {
       title: "Stack",
       note: "What I reach for. Depth varies — the ERP and automation side is where I have the most production mileage.",
       groups: [
-        { label: "AI", items: ["OpenAI", "Claude", "Botpress", "Prompt engineering"] },
+        { label: "AI", items: ["OpenAI", "Claude", "Botpress", "Prompt engineering", "Conversational agents"] },
         { label: "Automation", items: ["n8n", "Power Automate", "Webhooks"] },
         { label: "ERP", items: ["Odoo 18", "Python", "PostgreSQL", "OWL"] },
         { label: "Web", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vite"] },
-        { label: "Integration", items: ["REST APIs", "WhatsApp Business", "Stripe", "Mercado Libre"] },
+        { label: "Integration", items: ["REST APIs", "WhatsApp Business", "Meta API", "Stripe", "Mercado Libre"] },
         { label: "Microsoft 365", items: ["Power Apps", "Power Automate", "SharePoint"] },
         { label: "Other", items: ["Git", "MQTT / IoT", "Metabase", "Vercel"] },
       ],
@@ -469,7 +511,7 @@ export const dict: Record<Lang, Dict> = {
       { value: "3+", label: "años construyendo sistemas en producción" },
       { value: "90+", label: "módulos ERP a la medida en el código" },
       { value: "285", label: "commits como 2º contribuidor del monorepo ERP" },
-      { value: "9", label: "proyectos documentados como case studies" },
+      { value: "10", label: "proyectos documentados como case studies" },
     ],
     work: {
       title: "Proyectos seleccionados",
@@ -512,11 +554,11 @@ export const dict: Record<Lang, Dict> = {
       title: "Stack",
       note: "Lo que uso. La profundidad varía — el lado de ERP y automatización es donde tengo más kilometraje en producción.",
       groups: [
-        { label: "IA", items: ["OpenAI", "Claude", "Botpress", "Prompt engineering"] },
+        { label: "IA", items: ["OpenAI", "Claude", "Botpress", "Prompt engineering", "Agentes conversacionales"] },
         { label: "Automatización", items: ["n8n", "Power Automate", "Webhooks"] },
         { label: "ERP", items: ["Odoo 18", "Python", "PostgreSQL", "OWL"] },
         { label: "Web", items: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Vite"] },
-        { label: "Integración", items: ["APIs REST", "WhatsApp Business", "Stripe", "Mercado Libre"] },
+        { label: "Integración", items: ["APIs REST", "WhatsApp Business", "Meta API", "Stripe", "Mercado Libre"] },
         { label: "Microsoft 365", items: ["Power Apps", "Power Automate", "SharePoint"] },
         { label: "Otros", items: ["Git", "MQTT / IoT", "Metabase", "Vercel"] },
       ],

@@ -51,6 +51,14 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+      <head>
+        {/* Without JS the scroll-reveal system never runs, so every
+            .gs-reveal would stay at opacity 0. Reverse it here rather
+            than defaulting to visible, which would flash before hiding. */}
+        <noscript>
+          <style>{`.gs-reveal{opacity:1 !important;transform:none !important}`}</style>
+        </noscript>
+      </head>
       <body>{children}</body>
     </html>
   );

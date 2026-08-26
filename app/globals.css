@@ -1,84 +1,380 @@
 @import "tailwindcss";
 
-@theme {
-  /* Surfaces */
-  --color-bg: #08090c;
-  --color-surface: #0e1116;
-  --color-surface-2: #13171e;
-  --color-border: #1e232d;
-  --color-border-bright: #2b323f;
+/* ══════════════════════════════════════════════════════════════
+   PALETTE
+   Dark is the primary state. Light is fully functional.
+   Runtime custom properties → @theme inline, so a single token
+   set drives both themes and no component ever holds a raw hex.
+   ══════════════════════════════════════════════════════════════ */
 
-  /* Text */
-  --color-fg: #e7eaf0;
-  --color-fg-muted: #939cad;
-  --color-fg-dim: #6b7383;
+:root {
+  color-scheme: dark;
 
-  /* Accent */
-  --color-accent: #22d3ee;
-  --color-accent-dim: #0e7490;
-  --color-accent-soft: #164e5c;
+  --p-bg: #07080b;
+  --p-bg-elevated: #0d1017;
+  --p-surface: #10141c;
+  --p-surface-2: #161b25;
+  --p-border: rgba(255, 255, 255, 0.08);
+  --p-border-bright: rgba(255, 255, 255, 0.15);
+  --p-control-border: rgba(255, 255, 255, 0.38);
+  --p-hairline: rgba(255, 255, 255, 0.06);
+
+  --p-fg: #eceff5;
+  --p-fg-muted: #9aa3b2;
+  --p-fg-dim: #767f8f;
+
+  --p-accent: #22d3ee;
+  --p-accent-strong: #67e8f9;
+  --p-accent-deep: #0e7490;
+  --p-on-accent: #04161c;
+
+  --p-glow: rgba(34, 211, 238, 0.13);
+  --p-spotlight: rgba(103, 232, 249, 0.09);
+  --p-aurora-a: rgba(14, 116, 144, 0.42);
+  --p-aurora-b: rgba(30, 64, 110, 0.40);
+  --p-aurora-c: rgba(34, 211, 238, 0.12);
+
+  --p-grid: rgba(148, 163, 184, 0.055);
+  --p-noise-opacity: 0.032;
+
+  /* Elevation: shadow + translucent hairline + inner highlight */
+  --e-1: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  --e-2: 0 4px 16px -4px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  --e-3: 0 16px 48px -12px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+
+    --p-bg: #fbfcfd;
+    --p-bg-elevated: #ffffff;
+    --p-surface: #ffffff;
+    --p-surface-2: #f2f5f8;
+    --p-border: rgba(15, 23, 42, 0.11);
+    --p-border-bright: rgba(15, 23, 42, 0.2);
+    --p-control-border: rgba(15, 23, 42, 0.52);
+    --p-hairline: rgba(15, 23, 42, 0.07);
+
+    --p-fg: #0b0e14;
+    --p-fg-muted: #4a5261;
+    --p-fg-dim: #626b7a;
+
+    --p-accent: #0e7490;
+    --p-accent-strong: #0b5c73;
+    --p-accent-deep: #22d3ee;
+    --p-on-accent: #ffffff;
+
+    --p-glow: rgba(14, 116, 144, 0.1);
+    --p-spotlight: rgba(14, 116, 144, 0.06);
+    --p-aurora-a: rgba(34, 211, 238, 0.2);
+    --p-aurora-b: rgba(59, 130, 246, 0.14);
+    --p-aurora-c: rgba(14, 116, 144, 0.1);
+
+    --p-grid: rgba(15, 23, 42, 0.05);
+    --p-noise-opacity: 0.02;
+
+    --e-1: 0 1px 2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+    --e-2: 0 4px 16px -4px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+    --e-3: 0 16px 48px -12px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 1);
+  }
+}
+
+[data-theme="light"] {
+  color-scheme: light;
+  --p-bg: #fbfcfd;
+  --p-bg-elevated: #ffffff;
+  --p-surface: #ffffff;
+  --p-surface-2: #f2f5f8;
+  --p-border: rgba(15, 23, 42, 0.11);
+  --p-border-bright: rgba(15, 23, 42, 0.2);
+  --p-control-border: rgba(15, 23, 42, 0.52);
+  --p-hairline: rgba(15, 23, 42, 0.07);
+  --p-fg: #0b0e14;
+  --p-fg-muted: #4a5261;
+  --p-fg-dim: #626b7a;
+  --p-accent: #0e7490;
+  --p-accent-strong: #0b5c73;
+  --p-accent-deep: #22d3ee;
+  --p-on-accent: #ffffff;
+  --p-glow: rgba(14, 116, 144, 0.1);
+  --p-spotlight: rgba(14, 116, 144, 0.06);
+  --p-aurora-a: rgba(34, 211, 238, 0.2);
+  --p-aurora-b: rgba(59, 130, 246, 0.14);
+  --p-aurora-c: rgba(14, 116, 144, 0.1);
+  --p-grid: rgba(15, 23, 42, 0.05);
+  --p-noise-opacity: 0.02;
+  --e-1: 0 1px 2px rgba(15, 23, 42, 0.06), inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  --e-2: 0 4px 16px -4px rgba(15, 23, 42, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.9);
+  --e-3: 0 16px 48px -12px rgba(15, 23, 42, 0.14), inset 0 1px 0 rgba(255, 255, 255, 1);
+}
+
+@theme inline {
+  --color-bg: var(--p-bg);
+  --color-bg-elevated: var(--p-bg-elevated);
+  --color-surface: var(--p-surface);
+  --color-surface-2: var(--p-surface-2);
+  --color-border: var(--p-border);
+  --color-border-bright: var(--p-border-bright);
+  --color-control: var(--p-control-border);
+  --color-hairline: var(--p-hairline);
+
+  --color-fg: var(--p-fg);
+  --color-fg-muted: var(--p-fg-muted);
+  --color-fg-dim: var(--p-fg-dim);
+
+  --color-accent: var(--p-accent);
+  --color-accent-strong: var(--p-accent-strong);
+  --color-accent-deep: var(--p-accent-deep);
+  --color-on-accent: var(--p-on-accent);
+  --color-ring: var(--p-accent);
 
   --font-sans: var(--font-inter), ui-sans-serif, system-ui, -apple-system, sans-serif;
   --font-mono: var(--font-mono-jb), ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  --shadow-e1: var(--e-1);
+  --shadow-e2: var(--e-2);
+  --shadow-e3: var(--e-3);
+
+  --radius-card: 14px;
+  --radius-chip: 7px;
 }
+
+/* ══════════════════════════════════════════════════════════════
+   BASE
+   ══════════════════════════════════════════════════════════════ */
 
 @layer base {
   html {
     scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
   }
 
   body {
-    background-color: var(--color-bg);
-    color: var(--color-fg);
+    background-color: var(--p-bg);
+    color: var(--p-fg);
     font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
     -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
   }
 
-  /* Visible focus on every interactive control — never removed. */
+  /* WCAG 2.2 focus-appearance: >=2px perimeter, 3:1 state contrast. */
   :focus-visible {
-    outline: 2px solid var(--color-accent);
+    outline: 2px solid var(--p-accent);
     outline-offset: 3px;
-    border-radius: 2px;
+    border-radius: 3px;
   }
 
   ::selection {
-    background: var(--color-accent-soft);
-    color: var(--color-fg);
+    background: var(--p-accent-deep);
+    color: var(--p-fg);
+  }
+
+  h1,
+  h2,
+  h3 {
+    letter-spacing: -0.03em;
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
   }
 }
 
+/* ══════════════════════════════════════════════════════════════
+   FLUID TYPE SCALE
+   ══════════════════════════════════════════════════════════════ */
+
 @layer utilities {
-  /* Faint engineering grid. Decorative only. */
+  .t-display {
+    font-size: clamp(2.75rem, 1.6rem + 5.2vw, 6rem);
+    letter-spacing: -0.04em;
+    line-height: 0.98;
+    font-weight: 600;
+  }
+
+  .t-h2 {
+    font-size: clamp(1.65rem, 1.25rem + 1.7vw, 2.6rem);
+    letter-spacing: -0.03em;
+    font-weight: 600;
+  }
+
+  .t-lead {
+    font-size: clamp(1.03rem, 0.96rem + 0.34vw, 1.22rem);
+    line-height: 1.62;
+  }
+
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+
+  .tnum {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: "tnum" 1;
+  }
+
+  /* ── Depth layers ─────────────────────────────────────────── */
+
   .tech-grid {
     background-image:
-      linear-gradient(to right, rgba(148, 163, 184, 0.055) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(148, 163, 184, 0.055) 1px, transparent 1px);
-    background-size: 56px 56px;
+      linear-gradient(to right, var(--p-grid) 1px, transparent 1px),
+      linear-gradient(to bottom, var(--p-grid) 1px, transparent 1px);
+    background-size: 54px 54px;
   }
 
   .grid-fade {
-    -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
-    mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 38%, transparent 100%);
+    mask-image: radial-gradient(ellipse 78% 62% at 50% 0%, #000 38%, transparent 100%);
   }
 
-  .rule-label {
-    font-family: var(--font-mono);
-    font-size: 0.6875rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
+  /* Grain removes the "flat empty" feel of large dark areas. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: var(--p-noise-opacity);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: overlay;
+  }
+
+  .card {
+    background: var(--p-surface);
+    border: 1px solid var(--p-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--e-1);
+  }
+
+  .card-raised {
+    background: var(--p-surface);
+    border: 1px solid var(--p-border);
+    border-radius: var(--radius-card);
+    box-shadow: var(--e-2);
+  }
+
+  /* Animated conic border for the featured bento tile. */
+  .border-flow {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .border-flow::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--flow-angle, 0deg),
+      transparent 0deg,
+      var(--p-accent) 55deg,
+      var(--p-accent-strong) 95deg,
+      transparent 165deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0.75;
+    z-index: -1;
+    animation: flow-spin 6s linear infinite;
+  }
+
+  @keyframes flow-spin {
+    to {
+      --flow-angle: 360deg;
+    }
+  }
+
+  /* Cursor spotlight — only wired up on pointer:fine (see SpotlightCard). */
+  .spotlight::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 260ms ease;
+    background: radial-gradient(
+      420px circle at var(--mx, 50%) var(--my, 50%),
+      var(--p-spotlight),
+      transparent 62%
+    );
+  }
+
+  .spotlight:hover::after,
+  .spotlight:focus-within::after {
+    opacity: 1;
+  }
+
+  .glow-accent {
+    box-shadow: 0 0 0 1px var(--p-border), 0 8px 40px -12px var(--p-glow);
   }
 }
 
-/* Scroll reveal — collapses to the final readable state under reduced motion. */
-.reveal {
+@property --flow-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* ══════════════════════════════════════════════════════════════
+   MOTION
+   GSAP owns scroll reveals. These are the CSS-only pieces.
+   ══════════════════════════════════════════════════════════════ */
+
+.aurora-layer {
+  animation: aurora-drift 22s ease-in-out infinite alternate;
+  will-change: transform;
+}
+
+@keyframes aurora-drift {
+  0% {
+    transform: translate3d(-3%, -2%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(4%, 3%, 0) scale(1.12);
+  }
+}
+
+.caret::after {
+  content: "";
+  display: inline-block;
+  width: 0.55ch;
+  height: 1.05em;
+  margin-left: 0.15ch;
+  translate: 0 0.18em;
+  background: var(--p-accent);
+  animation: caret-blink 1.05s steps(1) infinite;
+}
+
+@keyframes caret-blink {
+  50% {
+    opacity: 0;
+  }
+}
+
+/* Pre-reveal state. GSAP clears these; if JS never runs, the
+   fallback below still shows the content. */
+.gs-reveal {
   opacity: 0;
   transform: translateY(14px);
-  transition:
-    opacity 520ms cubic-bezier(0.22, 1, 0.36, 1),
-    transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.reveal[data-shown="true"] {
+/* Safety net if the motion system never initialises (hydration error,
+   GSAP chunk fails to load). The <noscript> block in layout.tsx covers
+   the JS-disabled case without causing a flash of hidden content. */
+.gs-ready .gs-reveal {
   opacity: 1;
   transform: none;
 }
@@ -88,10 +384,15 @@
     scroll-behavior: auto;
   }
 
-  .reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
+  .gs-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+
+  .aurora-layer,
+  .border-flow::before,
+  .caret::after {
+    animation: none !important;
   }
 
   *,
@@ -100,5 +401,6 @@
     animation-duration: 0.001ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
   }
 }

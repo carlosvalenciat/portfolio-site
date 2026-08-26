@@ -1,56 +1,27 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-
-type Props = {
-  children: React.ReactNode;
-  delay?: number;
-  className?: string;
-};
-
 /**
- * Fades content in once as it scrolls into view.
- * Purely decorative: globals.css collapses this to the final
- * readable state under prefers-reduced-motion.
+ * Reveal is now a marker, not a mechanism.
+ *
+ * All scroll choreography is registered once in useScrollMotion() under a
+ * single gsap.context, instead of one IntersectionObserver per element.
+ * This component only tags the node and declares its stagger group.
  */
-export default function Reveal({ children, delay = 0, className = "" }: Props) {
-  const ref = useRef<HTMLDivElement>(null);
-  const [shown, setShown] = useState(false);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    // If the browser can't observe, show immediately rather than hiding content.
-    if (typeof IntersectionObserver === "undefined") {
-      setShown(true);
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setShown(true);
-            observer.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: "0px 0px -40px 0px" },
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
-
+export default function Reveal({
+  children,
+  group,
+  className = "",
+  as: Tag = "div",
+}: {
+  children: React.ReactNode;
+  /** Elements sharing a group animate as one staggered batch. */
+  group?: string;
+  className?: string;
+  as?: "div" | "li" | "section";
+}) {
   return (
-    <div
-      ref={ref}
-      className={`reveal ${className}`}
-      data-shown={shown}
-      style={{ transitionDelay: shown ? `${delay}ms` : "0ms" }}
-    >
+    <Tag className={`gs-reveal ${className}`} data-reveal-group={group}>
       {children}
-    </div>
+    </Tag>
   );
 }

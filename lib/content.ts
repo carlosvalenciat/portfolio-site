@@ -37,6 +37,10 @@ export type Dict = {
     nodes: { id: string; label: string; sub: string }[];
     principles: { title: string; body: string }[];
   };
+  streamLog: {
+    label: string;
+    lines: { t: string; text: string; tone?: "ok" | "warn" | "accent" }[];
+  };
   stack: { title: string; note: string; groups: { label: string; items: string[] }[] };
   contact: { title: string; body: string; email: string; github: string; cta: string };
   footer: { built: string; source: string };
@@ -464,6 +468,16 @@ export const dict: Record<Lang, Dict> = {
         },
       ],
     },
+    streamLog: {
+      label: "intake pipeline · schematic",
+      lines: [
+        { t: "00.01", text: "telemetry   device → intake tray" },
+        { t: "00.02", text: "intake      idempotency key matched · duplicate dropped", tone: "warn" },
+        { t: "00.03", text: "reconcile   machine output vs. shift capture" },
+        { t: "00.04", text: "validate    variance within tolerance" },
+        { t: "00.05", text: "post        production validated · costed", tone: "accent" },
+      ],
+    },
     stack: {
       title: "Stack",
       note: "What I reach for. Depth varies — the ERP and automation side is where I have the most production mileage.",
@@ -548,6 +562,16 @@ export const dict: Record<Lang, Dict> = {
           title: "Correcto desde el origen",
           body: "Zonas horarias, redondeo de impuestos, scoping por compañía. Un corte diario que calcula el 'hoy' en UTC va a estar mal todos los días hasta que se arregle donde se escribe el dato, no parchado en el reporte.",
         },
+      ],
+    },
+    streamLog: {
+      label: "pipeline de intake · esquemático",
+      lines: [
+        { t: "00.01", text: "telemetría  dispositivo → bandeja de intake" },
+        { t: "00.02", text: "intake      clave idempotente repetida · duplicado descartado", tone: "warn" },
+        { t: "00.03", text: "reconcilia  salida de máquina vs. captura de turno" },
+        { t: "00.04", text: "valida      varianza dentro de tolerancia" },
+        { t: "00.05", text: "registra    producción validada · costeada", tone: "accent" },
       ],
     },
     stack: {

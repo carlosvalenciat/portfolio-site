@@ -2,6 +2,7 @@
 
 import { useId, useState } from "react";
 import type { Project } from "@/lib/content";
+import SpotlightCard from "./SpotlightCard";
 
 type Labels = {
   roleLabel: string;
@@ -14,111 +15,134 @@ type Labels = {
 export default function ProjectCard({
   project,
   labels,
+  featured = false,
 }: {
   project: Project;
   labels: Labels;
+  featured?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
   return (
-    <article className="group rounded-xl border border-border bg-surface/70 transition-colors duration-200 hover:border-border-bright">
-      <div className="p-6 sm:p-7">
-        <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
-          <h3 className="text-lg font-semibold tracking-tight text-fg sm:text-xl">
-            {project.title}
-          </h3>
-          <span className="rule-label text-fg-dim">{project.year}</span>
-        </div>
-
-        <p className="rule-label mt-2 text-accent">{project.kind}</p>
-
-        <p className="mt-4 text-[15px] leading-relaxed text-fg-muted">
-          {project.summary}
-        </p>
-
-        {project.metric && (
-          <div className="mt-5 inline-flex items-baseline gap-2.5 rounded-md border border-border bg-surface-2 px-3 py-2">
-            <span className="font-mono text-lg font-semibold text-accent">
-              {project.metric.value}
-            </span>
-            <span className="font-mono text-[11px] text-fg-dim">
-              {project.metric.label}
-            </span>
-          </div>
-        )}
-
-        <div className="mt-5 flex flex-wrap gap-1.5">
-          {project.stack.map((tech) => (
-            <span
-              key={tech}
-              className="rounded border border-border bg-surface-2 px-2 py-1 font-mono text-[11px] text-fg-muted"
+    <SpotlightCard featured={featured} className="h-full">
+      <article
+        className={`card flex h-full flex-col overflow-hidden transition-colors duration-200 ${
+          featured ? "shadow-e3" : "hover:border-border-bright"
+        }`}
+      >
+        <div className={featured ? "p-7 sm:p-9" : "p-6 sm:p-7"}>
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
+            <h3
+              className={`font-semibold tracking-tight text-fg ${
+                featured ? "text-xl sm:text-3xl" : "text-lg sm:text-xl"
+              }`}
             >
-              {tech}
-            </span>
-          ))}
-        </div>
+              {project.title}
+            </h3>
+            <span className="t-label tnum text-fg-dim">{project.year}</span>
+          </div>
 
-        <button
-          type="button"
-          onClick={() => setOpen((v) => !v)}
-          aria-expanded={open}
-          aria-controls={panelId}
-          className="mt-6 inline-flex min-h-[44px] cursor-pointer items-center gap-2 text-sm font-medium text-accent transition-opacity duration-200 hover:opacity-75"
-        >
-          {open ? labels.less : labels.more}
-          <svg
-            width="14"
-            height="14"
-            viewBox="0 0 16 16"
-            fill="none"
-            aria-hidden="true"
-            className="transition-transform duration-200"
-            style={{ transform: open ? "rotate(180deg)" : "none" }}
+          <p className="t-label mt-2.5 text-accent">{project.kind}</p>
+
+          <p
+            className={`mt-4 leading-relaxed text-fg-muted ${
+              featured ? "t-lead max-w-2xl" : "text-[15px]"
+            }`}
           >
-            <path
-              d="M4 6l4 4 4-4"
-              stroke="currentColor"
-              strokeWidth="1.7"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
-      </div>
-
-      {open && (
-        <div
-          id={panelId}
-          className="border-t border-border px-6 pb-7 pt-6 sm:px-7"
-        >
-          <h4 className="rule-label text-fg-dim">{labels.problemLabel}</h4>
-          <p className="mt-2.5 text-[15px] leading-relaxed text-fg-muted">
-            {project.problem}
+            {project.summary}
           </p>
 
-          <h4 className="rule-label mt-7 text-fg-dim">{labels.builtLabel}</h4>
-          <ul className="mt-2.5 space-y-2.5">
-            {project.built.map((item, i) => (
-              <li
-                key={i}
-                className="flex gap-3 text-[15px] leading-relaxed text-fg-muted"
+          {project.metric && (
+            <div className="mt-6 inline-flex items-baseline gap-2.5 rounded-chip border border-border bg-surface-2 px-3.5 py-2">
+              <span
+                className="tnum font-mono text-xl font-semibold text-accent"
+                data-countup={
+                  /^[\d,]+$/.test(project.metric.value)
+                    ? project.metric.value.replace(/,/g, "")
+                    : undefined
+                }
               >
-                <span
-                  aria-hidden="true"
-                  className="mt-2 h-px w-3 shrink-0 bg-accent-dim"
-                />
-                <span>{item}</span>
+                {project.metric.value}
+              </span>
+              <span className="font-mono text-[11px] text-fg-dim">
+                {project.metric.label}
+              </span>
+            </div>
+          )}
+
+          <ul className="mt-6 flex flex-wrap gap-1.5">
+            {project.stack.map((tech) => (
+              <li
+                key={tech}
+                className="rounded-chip border border-border bg-surface-2 px-2 py-1 font-mono text-[11px] text-fg-muted"
+              >
+                {tech}
               </li>
             ))}
           </ul>
 
-          <h4 className="rule-label mt-7 text-fg-dim">{labels.roleLabel}</h4>
-          <p className="mt-2.5 border-l-2 border-accent-dim pl-4 text-[15px] leading-relaxed text-fg">
-            {project.role}
-          </p>
+          <button
+            type="button"
+            onClick={() => setOpen((v) => !v)}
+            aria-expanded={open}
+            aria-controls={panelId}
+            className="mt-7 inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-chip text-sm font-medium text-accent transition-opacity duration-150 hover:opacity-70 active:opacity-50"
+          >
+            {open ? labels.less : labels.more}
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 16 16"
+              fill="none"
+              aria-hidden="true"
+              className="transition-transform duration-200"
+              style={{ transform: open ? "rotate(180deg)" : "none" }}
+            >
+              <path
+                d="M4 6l4 4 4-4"
+                stroke="currentColor"
+                strokeWidth="1.7"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
-      )}
-    </article>
+
+        {open && (
+          <div
+            id={panelId}
+            className="border-t border-hairline px-6 pb-8 pt-6 sm:px-7"
+          >
+            <h4 className="t-label text-fg-dim">{labels.problemLabel}</h4>
+            <p className="mt-2.5 text-[15px] leading-relaxed text-fg-muted">
+              {project.problem}
+            </p>
+
+            <h4 className="t-label mt-7 text-fg-dim">{labels.builtLabel}</h4>
+            <ul className="mt-2.5 space-y-2.5">
+              {project.built.map((item, i) => (
+                <li
+                  key={i}
+                  className="flex gap-3 text-[15px] leading-relaxed text-fg-muted"
+                >
+                  <span
+                    aria-hidden="true"
+                    className="mt-2.5 h-px w-3 shrink-0 bg-accent-deep"
+                  />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+
+            <h4 className="t-label mt-7 text-fg-dim">{labels.roleLabel}</h4>
+            <p className="mt-2.5 border-l-2 border-accent-deep pl-4 text-[15px] leading-relaxed text-fg">
+              {project.role}
+            </p>
+          </div>
+        )}
+      </article>
+    </SpotlightCard>
   );
 }

@@ -1,22 +1,43 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { dict, type Lang } from "@/lib/content";
+import { useScrollMotion } from "@/lib/useScrollMotion";
 import Reveal from "@/components/Reveal";
+import Aurora from "@/components/Aurora";
 import Pipeline from "@/components/Pipeline";
 import ProjectCard from "@/components/ProjectCard";
+import SpotlightCard from "@/components/SpotlightCard";
+import StreamLog from "@/components/StreamLog";
 
 const CARD_LABELS = {
-  en: { more: "Read the case study", less: "Close" },
-  es: { more: "Leer el case study", less: "Cerrar" },
+  en: { more: "Read the case study", less: "Close", copied: "Copied", copy: "Copy email" },
+  es: { more: "Leer el case study", less: "Cerrar", copied: "Copiado", copy: "Copiar correo" },
 };
+
+/** Asymmetric bento spans on a 6-column grid — deliberately uneven. */
+const SPANS = [
+  "lg:col-span-4",
+  "lg:col-span-2",
+  "lg:col-span-3",
+  "lg:col-span-3",
+  "lg:col-span-2",
+  "lg:col-span-4",
+  "lg:col-span-4",
+  "lg:col-span-2",
+  "lg:col-span-3",
+  "lg:col-span-3",
+];
+const FEATURED = new Set([0, 6]);
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
+  const [copied, setCopied] = useState(false);
+  const scope = useRef<HTMLDivElement>(null);
   const t = dict[lang];
 
-  // Restore the visitor's last choice. Storage can throw in private
-  // windows or with site data blocked — fall back to English silently.
+  useScrollMotion(scope);
+
   useEffect(() => {
     try {
       const saved = window.localStorage.getItem("cv-lang");
@@ -35,6 +56,18 @@ export default function Home() {
     }
   }, [lang]);
 
+  const copyEmail = async () => {
+    try {
+      await navigator.clipboard.writeText(t.contact.email);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2200);
+    } catch {
+      // Clipboard blocked (insecure context, permission denied): the address
+      // is visible and selectable below, so this is a graceful no-op.
+      setCopied(false);
+    }
+  };
+
   const navItems = [
     { href: "#work", label: t.nav.work },
     { href: "#how", label: t.nav.how },
@@ -43,31 +76,31 @@ export default function Home() {
   ];
 
   return (
-    <>
+    <div ref={scope}>
       <a
         href="#work"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-surface-2 focus:px-4 focus:py-2 focus:text-sm focus:text-fg"
+        className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded-chip focus:bg-surface-2 focus:px-4 focus:py-2 focus:text-sm focus:text-fg"
       >
         {lang === "en" ? "Skip to content" : "Saltar al contenido"}
       </a>
 
-      {/* ── Nav ───────────────────────────────────────────── */}
-      <header className="sticky top-0 z-40 border-b border-border/70 bg-bg/85 backdrop-blur-md">
-        <nav className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
+      {/* ── Nav ─────────────────────────────────────────────── */}
+      <header className="sticky top-0 z-40 border-b border-hairline bg-bg/80 backdrop-blur-xl">
+        <nav className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-5 py-3.5 sm:px-8">
           <a
             href="#top"
-            className="font-mono text-[13px] font-medium tracking-tight text-fg transition-colors hover:text-accent"
+            className="rounded-chip font-mono text-[13px] font-medium tracking-tight text-fg transition-colors duration-150 hover:text-accent"
           >
             CV<span className="text-accent">.</span>
           </a>
 
-          <div className="flex items-center gap-1 sm:gap-5">
-            <ul className="hidden items-center gap-5 sm:flex">
+          <div className="flex items-center gap-1 sm:gap-6">
+            <ul className="hidden items-center gap-6 sm:flex">
               {navItems.map((item) => (
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="text-[13.5px] text-fg-muted transition-colors duration-200 hover:text-fg"
+                    className="rounded-chip text-[13.5px] text-fg-muted transition-colors duration-150 hover:text-fg"
                   >
                     {item.label}
                   </a>
@@ -76,7 +109,7 @@ export default function Home() {
             </ul>
 
             <div
-              className="flex items-center rounded-md border border-border bg-surface p-0.5"
+              className="flex items-center rounded-chip border border-control bg-surface p-0.5"
               role="group"
               aria-label={lang === "en" ? "Language" : "Idioma"}
             >
@@ -86,7 +119,7 @@ export default function Home() {
                   type="button"
                   onClick={() => setLang(code)}
                   aria-pressed={lang === code}
-                  className={`min-h-[36px] min-w-[44px] cursor-pointer rounded font-mono text-[11px] uppercase tracking-wider transition-colors duration-200 ${
+                  className={`min-h-[36px] min-w-[44px] cursor-pointer rounded-[5px] font-mono text-[11px] uppercase tracking-wider transition-colors duration-150 ${
                     lang === code
                       ? "bg-surface-2 text-accent"
                       : "text-fg-dim hover:text-fg-muted"
@@ -101,43 +134,47 @@ export default function Home() {
       </header>
 
       <main id="top">
-        {/* ── Hero ────────────────────────────────────────── */}
-        <section className="relative overflow-hidden border-b border-border">
-          <div
-            aria-hidden="true"
-            className="tech-grid grid-fade pointer-events-none absolute inset-0"
-          />
-          <div className="relative mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-28">
-            <Reveal>
-              <p className="rule-label text-accent">{t.hero.eyebrow}</p>
-              <h1 className="mt-5 text-4xl font-semibold tracking-tight text-fg sm:text-6xl">
-                {t.hero.name}
-              </h1>
-              <p className="mt-3 font-mono text-sm text-fg-muted sm:text-base">
+        {/* ── Hero ──────────────────────────────────────────── */}
+        <section className="grain relative overflow-hidden border-b border-hairline">
+          <div data-parallax className="absolute inset-0">
+            <Aurora />
+          </div>
+
+          <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-36">
+            <Reveal group="hero">
+              <p className="t-label text-accent">{t.hero.eyebrow}</p>
+            </Reveal>
+            <Reveal group="hero">
+              <h1 className="t-display mt-6 text-fg">{t.hero.name}</h1>
+            </Reveal>
+            <Reveal group="hero">
+              <p className="mt-4 font-mono text-sm text-fg-muted sm:text-base">
                 {t.hero.role}
               </p>
-              <p className="mt-7 max-w-2xl text-base leading-relaxed text-fg-muted sm:text-lg">
-                {t.hero.pitch}
-              </p>
-
-              <div className="mt-7 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12.5px] text-fg-dim">
+            </Reveal>
+            <Reveal group="hero">
+              <p className="t-lead mt-8 max-w-2xl text-fg-muted">{t.hero.pitch}</p>
+            </Reveal>
+            <Reveal group="hero">
+              <div className="mt-8 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12.5px] text-fg-dim">
                 <span>{t.hero.location}</span>
                 <span aria-hidden="true" className="text-border-bright">
                   /
                 </span>
                 <span>{t.hero.languages}</span>
               </div>
-
-              <div className="mt-10 flex flex-wrap gap-3">
+            </Reveal>
+            <Reveal group="hero">
+              <div className="mt-11 flex flex-wrap gap-3">
                 <a
                   href="#work"
-                  className="inline-flex min-h-[44px] cursor-pointer items-center rounded-md bg-accent px-5 text-sm font-semibold text-bg transition-opacity duration-200 hover:opacity-90"
+                  className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip bg-accent px-6 text-sm font-semibold text-on-accent shadow-e2 transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
                 >
                   {t.hero.ctaWork}
                 </a>
                 <a
                   href="#contact"
-                  className="inline-flex min-h-[44px] cursor-pointer items-center rounded-md border border-border-bright px-5 text-sm font-medium text-fg transition-colors duration-200 hover:border-accent-dim hover:text-accent"
+                  className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors duration-150 hover:border-accent hover:text-accent"
                 >
                   {t.hero.ctaContact}
                 </a>
@@ -146,46 +183,66 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Stats ───────────────────────────────────────── */}
-        <section className="border-b border-border bg-surface/40">
-          <div className="mx-auto grid max-w-5xl grid-cols-2 gap-px bg-border px-0 sm:grid-cols-4">
-            {t.stats.map((stat, i) => (
-              <div key={i} className="bg-bg px-5 py-7 sm:px-6">
-                <Reveal delay={i * 70}>
-                  <p className="font-mono text-2xl font-semibold text-accent sm:text-3xl">
-                    {stat.value}
+        {/* ── Proof ─────────────────────────────────────────── */}
+        <section className="border-b border-hairline bg-bg-elevated/40">
+          <div className="mx-auto grid max-w-6xl grid-cols-2 gap-px bg-hairline sm:grid-cols-4">
+            {t.stats.map((stat, i) => {
+              const numeric = stat.value.match(/^([\d,]+)(\+)?$/);
+              return (
+                <Reveal key={i} group="stats" className="bg-bg px-5 py-8 sm:px-6">
+                  <p className="tnum font-mono text-3xl font-semibold text-accent sm:text-4xl">
+                    {/* The true value is the rendered state. The count-up
+                        overwrites it only when it actually runs, so reduced
+                        motion and a failed hydration both show the real
+                        number instead of a permanent zero. */}
+                    {numeric ? (
+                      <>
+                        <span data-countup={numeric[1].replace(/,/g, "")}>
+                          {numeric[1]}
+                        </span>
+                        {numeric[2] ?? ""}
+                      </>
+                    ) : (
+                      stat.value
+                    )}
                   </p>
-                  <p className="mt-2 text-[12.5px] leading-snug text-fg-dim">
+                  <p className="mt-2.5 text-[12.5px] leading-snug text-fg-dim">
                     {stat.label}
                   </p>
                 </Reveal>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </section>
 
-        {/* ── Work ────────────────────────────────────────── */}
-        <section id="work" className="scroll-mt-16 border-b border-border">
-          <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-24">
+        {/* ── Work (bento) ──────────────────────────────────── */}
+        <section id="work" className="scroll-mt-16 border-b border-hairline">
+          <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
             <Reveal>
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-                {t.work.title}
-              </h2>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
+              <h2 className="t-h2 text-fg">{t.work.title}</h2>
+            </Reveal>
+            <Reveal>
+              <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
                 {t.work.note}
               </p>
             </Reveal>
 
-            <div className="mt-12 grid gap-5 lg:grid-cols-2">
+            <div className="mt-14 grid gap-5 lg:grid-cols-6">
               {t.projects.map((project, i) => (
-                <Reveal key={project.id} delay={(i % 2) * 80}>
+                <Reveal
+                  key={project.id}
+                  group={`work-${Math.floor(i / 2)}`}
+                  className={SPANS[i] ?? "lg:col-span-3"}
+                >
                   <ProjectCard
                     project={project}
+                    featured={FEATURED.has(i)}
                     labels={{
                       roleLabel: t.work.roleLabel,
                       problemLabel: t.work.problemLabel,
                       builtLabel: t.work.builtLabel,
-                      ...CARD_LABELS[lang],
+                      more: CARD_LABELS[lang].more,
+                      less: CARD_LABELS[lang].less,
                     }}
                   />
                 </Reveal>
@@ -194,76 +251,87 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── How I build ─────────────────────────────────── */}
-        <section id="how" className="scroll-mt-16 border-b border-border bg-surface/30">
-          <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-24">
+        {/* ── How I build ───────────────────────────────────── */}
+        <section
+          id="how"
+          className="grain relative scroll-mt-16 overflow-hidden border-b border-hairline bg-bg-elevated/30"
+        >
+          <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
             <Reveal>
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-                {t.how.title}
-              </h2>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
+              <h2 className="t-h2 text-fg">{t.how.title}</h2>
+            </Reveal>
+            <Reveal>
+              <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
                 {t.how.note}
               </p>
             </Reveal>
 
-            <Reveal>
-              <figure className="mt-12 rounded-xl border border-border bg-bg p-5 sm:p-7">
-                <figcaption className="mb-6">
-                  <h3 className="text-sm font-semibold text-fg">
-                    {t.how.diagramTitle}
-                  </h3>
-                  <p className="mt-2 max-w-2xl text-[13.5px] leading-relaxed text-fg-dim">
-                    {t.how.diagramCaption}
-                  </p>
-                </figcaption>
-                <Pipeline nodes={t.how.nodes} title={t.how.diagramTitle} />
-              </figure>
-            </Reveal>
+            <div className="mt-14 grid gap-5 lg:grid-cols-3">
+              <Reveal group="how-top" className="lg:col-span-2">
+                <SpotlightCard className="h-full">
+                  <figure className="card-raised h-full p-5 sm:p-7">
+                    <figcaption className="mb-7">
+                      <h3 className="text-sm font-semibold text-fg">
+                        {t.how.diagramTitle}
+                      </h3>
+                      <p className="mt-2.5 max-w-2xl text-[13.5px] leading-relaxed text-fg-dim">
+                        {t.how.diagramCaption}
+                      </p>
+                    </figcaption>
+                    <Pipeline nodes={t.how.nodes} title={t.how.diagramTitle} />
+                  </figure>
+                </SpotlightCard>
+              </Reveal>
 
-            <div className="mt-8 grid gap-5 md:grid-cols-3">
+              <Reveal group="how-top">
+                <StreamLog lines={t.streamLog.lines} label={t.streamLog.label} />
+              </Reveal>
+            </div>
+
+            <div className="mt-5 grid gap-5 md:grid-cols-3">
               {t.how.principles.map((p, i) => (
-                <Reveal key={i} delay={i * 80}>
-                  <div className="h-full rounded-xl border border-border bg-bg p-6">
-                    <p className="font-mono text-[11px] text-accent-dim">
-                      {String(i + 1).padStart(2, "0")}
-                    </p>
-                    <h3 className="mt-3 text-[15px] font-semibold text-fg">
-                      {p.title}
-                    </h3>
-                    <p className="mt-3 text-[14px] leading-relaxed text-fg-muted">
-                      {p.body}
-                    </p>
-                  </div>
+                <Reveal key={i} group="how-principles">
+                  <SpotlightCard className="h-full">
+                    <div className="card h-full p-6 sm:p-7">
+                      <p className="tnum font-mono text-[11px] text-accent-deep">
+                        {String(i + 1).padStart(2, "0")}
+                      </p>
+                      <h3 className="mt-3.5 text-[15px] font-semibold text-fg">
+                        {p.title}
+                      </h3>
+                      <p className="mt-3.5 text-[14px] leading-relaxed text-fg-muted">
+                        {p.body}
+                      </p>
+                    </div>
+                  </SpotlightCard>
                 </Reveal>
               ))}
             </div>
           </div>
         </section>
 
-        {/* ── Stack ───────────────────────────────────────── */}
-        <section id="stack" className="scroll-mt-16 border-b border-border">
-          <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-24">
+        {/* ── Stack ─────────────────────────────────────────── */}
+        <section id="stack" className="scroll-mt-16 border-b border-hairline">
+          <div className="mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-28">
             <Reveal>
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-                {t.stack.title}
-              </h2>
-              <p className="mt-4 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
+              <h2 className="t-h2 text-fg">{t.stack.title}</h2>
+            </Reveal>
+            <Reveal>
+              <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-fg-muted">
                 {t.stack.note}
               </p>
             </Reveal>
 
-            <dl className="mt-12 divide-y divide-border border-y border-border">
-              {t.stack.groups.map((group, i) => (
-                <Reveal key={group.label} delay={i * 50}>
-                  <div className="grid gap-3 py-5 sm:grid-cols-[160px_1fr] sm:gap-6">
-                    <dt className="rule-label pt-1 text-fg-dim">
-                      {group.label}
-                    </dt>
+            <dl className="mt-14 divide-y divide-hairline border-y border-hairline">
+              {t.stack.groups.map((group) => (
+                <Reveal key={group.label} group="stack-rows">
+                  <div className="grid gap-3 py-5 sm:grid-cols-[170px_1fr] sm:gap-6">
+                    <dt className="t-label pt-1.5 text-fg-dim">{group.label}</dt>
                     <dd className="flex flex-wrap gap-2">
                       {group.items.map((item) => (
                         <span
                           key={item}
-                          className="rounded border border-border bg-surface px-2.5 py-1 font-mono text-[12px] text-fg-muted"
+                          className="rounded-chip border border-border bg-surface px-2.5 py-1 font-mono text-[12px] text-fg-muted"
                         >
                           {item}
                         </span>
@@ -276,29 +344,61 @@ export default function Home() {
           </div>
         </section>
 
-        {/* ── Contact ─────────────────────────────────────── */}
-        <section id="contact" className="scroll-mt-16">
-          <div className="mx-auto max-w-5xl px-5 py-20 sm:px-8 sm:py-24">
-            <Reveal>
-              <h2 className="text-2xl font-semibold tracking-tight text-fg sm:text-3xl">
-                {t.contact.title}
-              </h2>
-              <p className="mt-4 max-w-xl text-[15px] leading-relaxed text-fg-muted">
-                {t.contact.body}
-              </p>
+        {/* ── Contact ───────────────────────────────────────── */}
+        <section id="contact" className="grain relative scroll-mt-16 overflow-hidden">
+          <div
+            aria-hidden="true"
+            className="tech-grid pointer-events-none absolute inset-0 opacity-60"
+          />
+          <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-32">
+            <Reveal group="contact">
+              <h2 className="t-h2 text-fg">{t.contact.title}</h2>
+            </Reveal>
+            <Reveal group="contact">
+              <p className="t-lead mt-5 max-w-xl text-fg-muted">{t.contact.body}</p>
+            </Reveal>
 
-              <div className="mt-9 flex flex-wrap gap-3">
+            <Reveal group="contact">
+              <div className="mt-11 flex flex-wrap gap-3">
                 <a
                   href={`mailto:${t.contact.email}`}
-                  className="inline-flex min-h-[44px] cursor-pointer items-center rounded-md bg-accent px-5 text-sm font-semibold text-bg transition-opacity duration-200 hover:opacity-90"
+                  className="inline-flex min-h-[48px] cursor-pointer items-center gap-2 rounded-chip bg-accent px-6 text-sm font-semibold text-on-accent shadow-e2 transition-all duration-150 hover:brightness-110 active:scale-[0.98]"
                 >
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    aria-hidden="true"
+                  >
+                    <path
+                      d="M2 4.5h12v7H2z"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                    />
+                    <path
+                      d="m2.5 5 5.5 4 5.5-4"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                    />
+                  </svg>
                   {t.contact.cta}
                 </a>
+
+                <button
+                  type="button"
+                  onClick={copyEmail}
+                  className="inline-flex min-h-[48px] cursor-pointer items-center gap-2 rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors duration-150 hover:border-accent hover:text-accent active:opacity-70"
+                >
+                  {copied ? CARD_LABELS[lang].copied : CARD_LABELS[lang].copy}
+                </button>
+
                 <a
                   href="https://github.com/carlosvalenciat"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-md border border-border-bright px-5 text-sm font-medium text-fg transition-colors duration-200 hover:border-accent-dim hover:text-accent"
+                  className="inline-flex min-h-[48px] cursor-pointer items-center gap-2 rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors duration-150 hover:border-accent hover:text-accent"
                 >
                   <svg
                     width="16"
@@ -312,33 +412,43 @@ export default function Home() {
                   {t.contact.github}
                 </a>
               </div>
+            </Reveal>
 
-              <p className="mt-7 font-mono text-[13px] text-fg-dim">
+            <Reveal group="contact">
+              <p
+                className="mt-8 font-mono text-[13px] text-fg-dim"
+                aria-live="polite"
+              >
                 <a
                   href={`mailto:${t.contact.email}`}
-                  className="transition-colors hover:text-accent"
+                  className="rounded-chip transition-colors duration-150 hover:text-accent"
                 >
                   {t.contact.email}
                 </a>
+                {copied && (
+                  <span className="ml-3 text-accent">
+                    {CARD_LABELS[lang].copied}
+                  </span>
+                )}
               </p>
             </Reveal>
           </div>
         </section>
       </main>
 
-      <footer className="border-t border-border">
-        <div className="mx-auto flex max-w-5xl flex-col gap-2 px-5 py-8 text-[12.5px] text-fg-dim sm:flex-row sm:items-center sm:justify-between sm:px-8">
+      <footer className="border-t border-hairline">
+        <div className="mx-auto flex max-w-6xl flex-col gap-2 px-5 py-8 text-[12.5px] text-fg-dim sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p>{t.footer.built}</p>
           <a
             href="https://github.com/carlosvalenciat/portfolio"
             target="_blank"
             rel="noopener noreferrer"
-            className="transition-colors hover:text-accent"
+            className="rounded-chip transition-colors duration-150 hover:text-accent"
           >
             {t.footer.source} ↗
           </a>
         </div>
       </footer>
-    </>
+    </div>
   );
 }

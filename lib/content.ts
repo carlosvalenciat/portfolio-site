@@ -478,7 +478,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     contact: {
-      title: "Let's talk",
+      title: "Contact",
       body: "Open to AI engineering, automation and integration roles — remote or in Guadalajara.",
       email: "cvalenciat023@gmail.com",
       github: "github.com/carlosvalenciat",
@@ -564,7 +564,7 @@ export const dict: Record<Lang, Dict> = {
       ],
     },
     contact: {
-      title: "Hablemos",
+      title: "Contacto",
       body: "Abierto a posiciones de ingeniería de IA, automatización e integración — remoto o en Guadalajara.",
       email: "cvalenciat023@gmail.com",
       github: "github.com/carlosvalenciat",

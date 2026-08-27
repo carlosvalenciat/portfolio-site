@@ -52,6 +52,8 @@ export function useScrollMotion(scope: RefObject<HTMLElement | null>) {
           return;
         }
 
+        const cleanups: Array<() => void> = [];
+
         const ctx = gsap.context(() => {
           // ── Grouped reveals: one ScrollTrigger per group, not per node ──
           const groups = new Map<string, HTMLElement[]>();
@@ -112,6 +114,39 @@ export function useScrollMotion(scope: RefObject<HTMLElement | null>) {
             });
           });
 
+          // ── Magnetic primary CTA ──
+          // Preset: hover + mousemove, elastic.out(1,0.4), driven through
+          // quickTo so no tween is allocated per pointer event.
+          const finePointer = window.matchMedia("(pointer: fine)").matches;
+          if (finePointer)
+            root.querySelectorAll<HTMLElement>("[data-magnetic]").forEach((el) => {
+            const xTo = gsap.quickTo(el, "x", {
+              duration: 0.4,
+              ease: "elastic.out(1,0.4)",
+            });
+            const yTo = gsap.quickTo(el, "y", {
+              duration: 0.4,
+              ease: "elastic.out(1,0.4)",
+            });
+
+            const onMove = (e: PointerEvent) => {
+              const r = el.getBoundingClientRect();
+              xTo((e.clientX - r.left - r.width / 2) * 0.3);
+              yTo((e.clientY - r.top - r.height / 2) * 0.3);
+            };
+            const onLeave = () => {
+              xTo(0);
+              yTo(0);
+            };
+
+            el.addEventListener("pointermove", onMove);
+            el.addEventListener("pointerleave", onLeave);
+            cleanups.push(() => {
+              el.removeEventListener("pointermove", onMove);
+              el.removeEventListener("pointerleave", onLeave);
+            });
+          });
+
           // ── Count-up on the metric row ──
           root.querySelectorAll<HTMLElement>("[data-countup]").forEach((el) => {
             const target = Number(el.dataset.countup);
@@ -131,7 +166,10 @@ export function useScrollMotion(scope: RefObject<HTMLElement | null>) {
           });
         }, root);
 
-        return () => ctx.revert();
+        return () => {
+          cleanups.forEach((fn) => fn());
+          ctx.revert();
+        };
       },
     );
 

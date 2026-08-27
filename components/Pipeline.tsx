@@ -5,9 +5,8 @@ type Node = { id: string; label: string; sub: string };
  *
  * Node 3 is dashed on purpose — it holds evidence, not truth. Node 5 is
  * where data becomes a business number, so it carries the only accent.
- * A packet animates along each connector to make the direction of travel
- * legible at a glance; SMIL animation is inert under reduced motion
- * because globals.css disables animation on the whole subtree.
+ * The numbering is kept here because this genuinely is a sequence:
+ * telemetry precedes intake, intake precedes reconciliation.
  */
 export default function Pipeline({
   nodes,
@@ -69,12 +68,12 @@ export default function Pipeline({
                   isTruth
                     ? "var(--p-accent-deep)"
                     : isEvidence
-                      ? "var(--p-fg-dim)"
+                      ? "var(--p-signal-pending)"
                       : "var(--p-border-bright)"
                 }
                 strokeWidth="1"
                 strokeDasharray={isEvidence ? "5 4" : undefined}
-                strokeOpacity={isEvidence ? 0.5 : 1}
+                strokeOpacity={isEvidence ? 0.75 : 1}
               />
 
               <text
@@ -111,8 +110,7 @@ export default function Pipeline({
               </text>
 
               {i < nodes.length - 1 && (
-                <>
-                  <line
+                <line
                     x1={x + W + 5}
                     y1={MID}
                     x2={x + STEP - 5}
@@ -122,32 +120,6 @@ export default function Pipeline({
                     strokeWidth="1.25"
                     markerEnd="url(#pl-arrow)"
                   />
-                  <circle r="2.6" fill="var(--p-accent)">
-                    <animate
-                      attributeName="cx"
-                      from={x + W + 6}
-                      to={x + STEP - 8}
-                      dur="1.6s"
-                      begin={`${i * 0.32}s`}
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="cy"
-                      from={MID}
-                      to={MID}
-                      dur="1.6s"
-                      begin={`${i * 0.32}s`}
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      values="0;1;1;0"
-                      dur="1.6s"
-                      begin={`${i * 0.32}s`}
-                      repeatCount="indefinite"
-                    />
-                  </circle>
-                </>
               )}
             </g>
           );

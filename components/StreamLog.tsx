@@ -65,12 +65,10 @@ export default function StreamLog({
 
   return (
     <div ref={ref} className="card-raised grain relative overflow-hidden">
-      <div className="flex items-center gap-2 border-b border-hairline px-4 py-2.5">
-        <span aria-hidden="true" className="flex gap-1.5">
-          <i className="block size-2 rounded-full bg-fg-dim/40" />
-          <i className="block size-2 rounded-full bg-fg-dim/40" />
-          <i className="block size-2 rounded-full bg-accent/60" />
-        </span>
+      {/* The three traffic-light dots that used to sit here were removed:
+          they imitated window chrome and encoded nothing. The label alone
+          says what this is. */}
+      <div className="border-b border-hairline px-4 py-2.5">
         <span className="t-label text-fg-dim">{label}</span>
       </div>
 

@@ -10,6 +10,7 @@
 :root {
   color-scheme: dark;
 
+  --p-abyss: #030407;
   --p-bg: #07080b;
   --p-bg-elevated: #0d1017;
   --p-surface: #10141c;
@@ -27,6 +28,9 @@
   --p-accent-strong: #67e8f9;
   --p-accent-deep: #0e7490;
   --p-on-accent: #04161c;
+
+  --p-signal-pending: #f0a35e;
+  --p-depth-veil: rgba(3, 4, 7, 0.72);
 
   --p-glow: rgba(34, 211, 238, 0.13);
   --p-spotlight: rgba(103, 232, 249, 0.09);
@@ -47,6 +51,7 @@
   :root:not([data-theme="dark"]) {
     color-scheme: light;
 
+    --p-abyss: #eef1f5;
     --p-bg: #fbfcfd;
     --p-bg-elevated: #ffffff;
     --p-surface: #ffffff;
@@ -65,6 +70,9 @@
     --p-accent-deep: #22d3ee;
     --p-on-accent: #ffffff;
 
+    --p-signal-pending: #a35c12;
+    --p-depth-veil: rgba(251, 252, 253, 0.78);
+
     --p-glow: rgba(14, 116, 144, 0.1);
     --p-spotlight: rgba(14, 116, 144, 0.06);
     --p-aurora-a: rgba(34, 211, 238, 0.2);
@@ -82,6 +90,7 @@
 
 [data-theme="light"] {
   color-scheme: light;
+  --p-abyss: #eef1f5;
   --p-bg: #fbfcfd;
   --p-bg-elevated: #ffffff;
   --p-surface: #ffffff;
@@ -97,6 +106,8 @@
   --p-accent-strong: #0b5c73;
   --p-accent-deep: #22d3ee;
   --p-on-accent: #ffffff;
+  --p-signal-pending: #a35c12;
+  --p-depth-veil: rgba(251, 252, 253, 0.78);
   --p-glow: rgba(14, 116, 144, 0.1);
   --p-spotlight: rgba(14, 116, 144, 0.06);
   --p-aurora-a: rgba(34, 211, 238, 0.2);
@@ -110,7 +121,9 @@
 }
 
 @theme inline {
+  --color-abyss: var(--p-abyss);
   --color-bg: var(--p-bg);
+  --color-pending: var(--p-signal-pending);
   --color-bg-elevated: var(--p-bg-elevated);
   --color-surface: var(--p-surface);
   --color-surface-2: var(--p-surface-2);
@@ -190,11 +203,52 @@
    ══════════════════════════════════════════════════════════════ */
 
 @layer utilities {
+  /* Inter's optical-size axis gives a genuine display cut from the same
+     file: tighter apertures and spacing at large sizes. No third font,
+     no extra bytes. */
   .t-display {
-    font-size: clamp(2.75rem, 1.6rem + 5.2vw, 6rem);
-    letter-spacing: -0.04em;
-    line-height: 0.98;
-    font-weight: 600;
+    font-size: clamp(2.75rem, 1.4rem + 6vw, 6.5rem);
+    font-variation-settings: "opsz" 32;
+    letter-spacing: -0.045em;
+    line-height: 0.94;
+    font-weight: 700;
+  }
+
+  /* The weight drop from 700 to 300 at a similar size is the contrast
+     that reads as deliberate typography rather than a default. */
+  .t-role {
+    font-weight: 300;
+    font-size: clamp(1.05rem, 0.85rem + 0.9vw, 1.6rem);
+    letter-spacing: -0.015em;
+  }
+
+  /* Prose measure: 62-72 characters. */
+  .measure {
+    max-width: 64ch;
+  }
+
+  .measure-tight {
+    max-width: 56ch;
+  }
+
+  /* Guarantees text contrast over the signal field by construction. */
+  .veil {
+    background: var(--p-depth-veil);
+    backdrop-filter: blur(2px);
+  }
+
+  /* Two-column editorial grid: mono metadata rail, then prose. */
+  .rail-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    .rail-grid {
+      grid-template-columns: 8.5rem 1fr;
+      gap: 2rem;
+    }
   }
 
   .t-h2 {
@@ -260,41 +314,6 @@
     box-shadow: var(--e-2);
   }
 
-  /* Animated conic border for the featured bento tile. */
-  .border-flow {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .border-flow::before {
-    content: "";
-    position: absolute;
-    inset: -1px;
-    border-radius: inherit;
-    padding: 1px;
-    background: conic-gradient(
-      from var(--flow-angle, 0deg),
-      transparent 0deg,
-      var(--p-accent) 55deg,
-      var(--p-accent-strong) 95deg,
-      transparent 165deg,
-      transparent 360deg
-    );
-    -webkit-mask:
-      linear-gradient(#000 0 0) content-box,
-      linear-gradient(#000 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0.75;
-    z-index: -1;
-    animation: flow-spin 6s linear infinite;
-  }
-
-  @keyframes flow-spin {
-    to {
-      --flow-angle: 360deg;
-    }
-  }
 
   /* Cursor spotlight — only wired up on pointer:fine (see SpotlightCard). */
   .spotlight::after {
@@ -322,11 +341,6 @@
   }
 }
 
-@property --flow-angle {
-  syntax: "<angle>";
-  initial-value: 0deg;
-  inherits: false;
-}
 
 /* ══════════════════════════════════════════════════════════════
    MOTION
@@ -389,8 +403,6 @@
     transform: none !important;
   }
 
-  .aurora-layer,
-  .border-flow::before,
   .caret::after {
     animation: none !important;
   }

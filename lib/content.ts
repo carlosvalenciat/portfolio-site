@@ -63,13 +63,13 @@ const projectsEn: Project[] = [
       "A CRM automation bridge relaying Odoo chatter to n8n, with a bot-pause control patched into the chatter UI so a human can take over mid-conversation",
     ],
     stack: ["Odoo 18", "Python", "PostgreSQL", "OWL", "n8n", "WhatsApp Business"],
-    role: "Backend/ERP developer on a ~90-module monorepo, and one of its two main contributors (~285 commits). Owned the production-ops and sales-ops domains end to end.",
-    metric: { value: "285", label: "commits · 2nd of 10 contributors" },
+    role: "Backend/ERP developer on a ~90-module monorepo, and one of its three main contributors (285 commits). Owned the production-ops and sales-ops domains end to end.",
+    metric: { value: "285", label: "commits · 3rd of 5 contributors" },
   },
   {
     id: "koldplant",
-    title: "KoldPlant — Production Telemetry",
-    kind: "IoT · Data Architecture",
+    title: "KoldPlant — Machine Data from the Plant Floor",
+    kind: "Sensor data · Architecture",
     year: "2026",
     summary:
       "Plant telemetry ingested into the ERP, reconciled against human capture, and surfaced by role.",
@@ -87,7 +87,7 @@ const projectsEn: Project[] = [
   {
     id: "ops-pwa",
     title: "ERP-Integrated Operations App",
-    kind: "PWA · Full-stack",
+    kind: "Mobile web app · Full-stack",
     year: "2026",
     summary:
       "A React PWA to run and record plant, sales and delivery operations live against the ERP.",
@@ -98,9 +98,9 @@ const projectsEn: Project[] = [
       "Role-based access per job function, with dashboards for monitoring",
       "Delivery-route assignment and maps for logistics tracking",
     ],
-    stack: ["React 18", "Vite", "Tailwind CSS", "Odoo REST", "PostgreSQL", "Vercel"],
-    role: "Full-stack and ERP integration work across modules and shared libraries, second of six contributors (~187 commits).",
-    metric: { value: "187", label: "commits · 2nd of 6 contributors" },
+    stack: ["React 18", "Vite", "Tailwind CSS", "Odoo REST", "Vercel"],
+    role: "Full-stack and ERP integration work across modules and shared libraries, second of four contributors (187 commits).",
+    metric: { value: "187", label: "commits · 2nd of 4 contributors" },
   },
   {
     id: "koldhome",
@@ -154,7 +154,7 @@ const projectsEn: Project[] = [
     ],
     stack: ["Power Apps", "Power Automate", "SharePoint", "Word/PDF", "Microsoft 365"],
     role: "Sole developer. Designed and built the canvas app, the SharePoint data model and every Power Automate flow, then wrote the technical documentation — architecture, failure modes and a deployment checklist — so it could be maintained by someone else.",
-    metric: { value: "~396", label: "rows rendered per consolidated report" },
+    metric: { value: "up to ~396", label: "rows per consolidated report" },
   },
   {
     id: "conversational-commerce",
@@ -174,8 +174,8 @@ const projectsEn: Project[] = [
       "Message automation through the Meta API: provisioning numbers, getting templates approved, and sending notices — driven by scheduled jobs and HTTP request nodes authenticating against several platforms",
     ],
     stack: ["Botpress", "WhatsApp Business API", "Meta API", "n8n", "OpenAI", "Odoo", "Python"],
-    role: "Second of five contributors on the webhook controller (43 of 117 commits). I owned the sales-bot path, the manufacturing-order and warehouse-location logic, the operator response actions and the n8n callbacks — and built the n8n + OpenAI variant of the same flow.",
-    metric: { value: "43", label: "commits · 2nd of 5 on the bot controller" },
+    role: "Second of four contributors on the webhook controller (43 of 117 commits). I owned the sales-bot path, the manufacturing-order and warehouse-location logic, the operator response actions and the n8n callbacks — and built the n8n + OpenAI variant of the same flow.",
+    metric: { value: "43", label: "commits · 2nd of 4 on the bot controller" },
   },
   {
     id: "ai-agents",
@@ -242,13 +242,13 @@ const projectsEs: Project[] = [
       "Un puente de automatización CRM que relaya el chatter de Odoo hacia n8n, con un botón de bot-pause insertado en la UI del chatter para que un humano tome la conversación a media línea",
     ],
     stack: ["Odoo 18", "Python", "PostgreSQL", "OWL", "n8n", "WhatsApp Business"],
-    role: "Desarrollador backend/ERP en un monorepo de ~90 módulos, y uno de sus dos contribuidores principales (~285 commits). Dueño de los dominios de producción y ventas de punta a punta.",
-    metric: { value: "285", label: "commits · 2º de 10 contribuidores" },
+    role: "Desarrollador backend/ERP en un monorepo de ~90 módulos, y uno de sus tres contribuidores principales (285 commits). Dueño de los dominios de producción y ventas de punta a punta.",
+    metric: { value: "285", label: "commits · 3º de 5 contribuidores" },
   },
   {
     id: "koldplant",
-    title: "KoldPlant — Telemetría de Producción",
-    kind: "IoT · Arquitectura de datos",
+    title: "KoldPlant — Datos de Máquina desde el Piso de Planta",
+    kind: "Datos de sensores · Arquitectura",
     year: "2026",
     summary:
       "Telemetría de planta ingerida al ERP, reconciliada contra la captura humana, y expuesta por rol.",
@@ -266,7 +266,7 @@ const projectsEs: Project[] = [
   {
     id: "ops-pwa",
     title: "App de Operaciones Integrada al ERP",
-    kind: "PWA · Full-stack",
+    kind: "App web móvil · Full-stack",
     year: "2026",
     summary:
       "Una PWA en React para ejecutar y registrar operaciones de planta, venta y reparto en vivo contra el ERP.",
@@ -277,9 +277,9 @@ const projectsEs: Project[] = [
       "Acceso por rol según puesto, con dashboards de monitoreo",
       "Asignación de rutas de reparto y mapas para seguimiento logístico",
     ],
-    stack: ["React 18", "Vite", "Tailwind CSS", "Odoo REST", "PostgreSQL", "Vercel"],
-    role: "Trabajo full-stack e integración con el ERP en módulos y librerías compartidas, segundo de seis contribuidores (~187 commits).",
-    metric: { value: "187", label: "commits · 2º de 6 contribuidores" },
+    stack: ["React 18", "Vite", "Tailwind CSS", "Odoo REST", "Vercel"],
+    role: "Trabajo full-stack e integración con el ERP en módulos y librerías compartidas, segundo de cuatro contribuidores (187 commits).",
+    metric: { value: "187", label: "commits · 2º de 4 contribuidores" },
   },
   {
     id: "koldhome",
@@ -333,7 +333,7 @@ const projectsEs: Project[] = [
     ],
     stack: ["Power Apps", "Power Automate", "SharePoint", "Word/PDF", "Microsoft 365"],
     role: "Único desarrollador. Diseñé y construí la app canvas, el modelo de datos en SharePoint y todos los flujos de Power Automate, y escribí la documentación técnica —arquitectura, modos de falla y checklist de despliegue— para que otra persona pudiera mantenerla.",
-    metric: { value: "~396", label: "filas por reporte consolidado" },
+    metric: { value: "hasta ~396", label: "filas por reporte consolidado" },
   },
   {
     id: "conversational-commerce",
@@ -353,8 +353,8 @@ const projectsEs: Project[] = [
       "Automatización de mensajería vía Meta API: provisionar números, aprobar plantillas y enviar avisos — movidos por crones y nodos HTTP que autentican contra varias plataformas",
     ],
     stack: ["Botpress", "WhatsApp Business API", "Meta API", "n8n", "OpenAI", "Odoo", "Python"],
-    role: "Segundo de cinco contribuidores en el controlador webhook (43 de 117 commits). Fui dueño de la ruta del bot de ventas, la lógica de órdenes de manufactura y ubicaciones de almacén, las actions de respuesta del almacenista y los callbacks a n8n — y construí la variante en n8n + OpenAI del mismo flujo.",
-    metric: { value: "43", label: "commits · 2º de 5 en el controlador del bot" },
+    role: "Segundo de cuatro contribuidores en el controlador webhook (43 de 117 commits). Fui dueño de la ruta del bot de ventas, la lógica de órdenes de manufactura y ubicaciones de almacén, las actions de respuesta del almacenista y los callbacks a n8n — y construí la variante en n8n + OpenAI del mismo flujo.",
+    metric: { value: "43", label: "commits · 2º de 4 en el controlador del bot" },
   },
   {
     id: "ai-agents",
@@ -419,16 +419,15 @@ export const dict: Record<Lang, Dict> = {
       name: "Carlos Valencia",
       role: "Integrations · AI Agents · ERP",
       pitch:
-        "Mechatronics Engineer focused on AI, automation and system integration. I turn manual processes and ambiguous requirements into reliable solutions, connected to the platforms a business already runs on.",
+        "Mechatronics Engineer with 3+ years building production systems, focused on AI, automation and system integration. I turn manual processes and ambiguous requirements into reliable solutions, connected to the platforms a business already runs on.",
       location: "Guadalajara, Mexico",
       languages: "Spanish (native) · English (B2)",
       ctaWork: "See the work",
       ctaContact: "Get in touch",
     },
     stats: [
-      { value: "3+", label: "years building production systems" },
       { value: "90+", label: "custom ERP modules in the codebase" },
-      { value: "285", label: "commits as 2nd contributor on the ERP monorepo" },
+      { value: "285", label: "commits · 3rd of 5 contributors on the ERP monorepo" },
       { value: "10", label: "shipped projects documented as case studies" },
     ],
     work: {
@@ -442,29 +441,29 @@ export const dict: Record<Lang, Dict> = {
     how: {
       title: "How I build",
       note: "The same three ideas show up in almost everything above. They are what separate a demo from a system that survives contact with an operation.",
-      diagramTitle: "Telemetry → truth: the KoldPlant intake path",
+      diagramTitle: "From a machine reading to a number the business can trust",
       diagramCaption:
-        "Machine data never becomes a business number in one hop. It lands as evidence, gets reconciled against human capture, and only then drives a decision.",
+        "The equipment reports how much it produced. People on the floor record it too, and the two rarely match exactly. So the machine reading is stored as evidence first, checked against what operators logged, and only then used for decisions and costing — moving through captured, validated and costed states.",
       nodes: [
         { id: "n1", label: "Plant equipment", sub: "telemetry" },
         { id: "n2", label: "n8n", sub: "ingest + map" },
-        { id: "n3", label: "Intake tray", sub: "idempotent · evidence" },
+        { id: "n3", label: "Intake tray", sub: "evidence, not yet trusted" },
         { id: "n4", label: "Reconciliation", sub: "vs. human capture" },
-        { id: "n5", label: "Validated production", sub: "auditable state" },
-        { id: "n6", label: "Surfaces by role", sub: "PWA · BI · finance" },
+        { id: "n5", label: "Validated production", sub: "checked and traceable" },
+        { id: "n6", label: "Seen by role", sub: "PWA · BI · finance" },
       ],
       principles: [
         {
-          title: "Idempotency is not optional",
-          body: "Field devices retry on bad connectivity. Every write path I build — packing capture, WhatsApp sends, webhook intake — is guarded against double-submission, because in the field a retry is the normal case, not the edge case.",
+          title: "A record should never save twice",
+          body: "Drivers and plant operators work where the signal drops. When the app doesn't hear back, it retries — and a careless system books the same delivery, or sends the same message, twice. So every save I build first checks whether it already happened. The technical name is idempotency; on the floor it's just the difference between inventory that matches reality and inventory that doesn't.",
         },
         {
-          title: "One source of truth, several surfaces",
-          body: "An operator, a plant manager and finance need different detail and different permissions over the same data. I build one logic and one truth, then present it per role — rather than letting a dashboard quietly become the system of record.",
+          title: "Everyone sees the same number, at their own level of detail",
+          body: "An operator, a plant manager and finance all need the same production figure — but not the same detail, and not the same permissions. I calculate it once and present it differently per role, instead of letting a dashboard quietly become a second version of the truth. One source of truth, several surfaces.",
         },
         {
-          title: "Correctness at the source",
-          body: "Timezones, tax rounding, company scoping. A daily close that computes 'today' in UTC will be wrong every single day until it is fixed where the data is written, not patched in the report.",
+          title: "Fix the data where it's created, not in the report",
+          body: "A daily sales cut that decides what 'today' means in the wrong timezone will be wrong every single day. Same with tax rounding, or which company a record belongs to. Patching the report hides the error; fixing it where the record is written removes it.",
         },
       ],
     },
@@ -515,16 +514,15 @@ export const dict: Record<Lang, Dict> = {
       name: "Carlos Valencia",
       role: "Integraciones · Agentes de IA · ERP",
       pitch:
-        "Ingeniero Mecatrónico enfocado en IA, automatización e integración de sistemas. Convierto procesos manuales y requerimientos ambiguos en soluciones confiables, conectadas con las plataformas que el negocio ya usa.",
+        "Ingeniero Mecatrónico con más de 3 años construyendo sistemas en producción, enfocado en IA, automatización e integración de sistemas. Convierto procesos manuales y requerimientos ambiguos en soluciones confiables, conectadas con las plataformas que el negocio ya usa.",
       location: "Guadalajara, México",
       languages: "Español (nativo) · Inglés (B2)",
       ctaWork: "Ver proyectos",
       ctaContact: "Contáctame",
     },
     stats: [
-      { value: "3+", label: "años construyendo sistemas en producción" },
       { value: "90+", label: "módulos ERP a la medida en el código" },
-      { value: "285", label: "commits como 2º contribuidor del monorepo ERP" },
+      { value: "285", label: "commits · 3º de 5 contribuidores del monorepo ERP" },
       { value: "10", label: "proyectos documentados como case studies" },
     ],
     work: {
@@ -538,29 +536,29 @@ export const dict: Record<Lang, Dict> = {
     how: {
       title: "Cómo trabajo",
       note: "Las mismas tres ideas aparecen en casi todo lo de arriba. Son lo que separa un demo de un sistema que sobrevive al contacto con una operación.",
-      diagramTitle: "Telemetría → verdad: la ruta de intake de KoldPlant",
+      diagramTitle: "De una lectura de máquina a un número en el que el negocio puede confiar",
       diagramCaption:
-        "El dato de máquina nunca se vuelve número de negocio en un solo salto. Aterriza como evidencia, se reconcilia contra la captura humana, y solo entonces mueve una decisión.",
+        "El equipo reporta cuánto produjo. La gente en piso también lo registra, y rara vez coinciden exacto. Por eso la lectura de máquina se guarda primero como evidencia, se contrasta con lo que capturaron los operadores, y solo entonces se usa para decidir y costear — pasando por estados de producción capturada, validada y costeada.",
       nodes: [
         { id: "n1", label: "Equipo de planta", sub: "telemetría" },
         { id: "n2", label: "n8n", sub: "ingesta + mapeo" },
-        { id: "n3", label: "Bandeja de intake", sub: "idempotente · evidencia" },
+        { id: "n3", label: "Bandeja de intake", sub: "evidencia, aún sin confiar" },
         { id: "n4", label: "Reconciliación", sub: "vs. captura humana" },
-        { id: "n5", label: "Producción validada", sub: "estado auditable" },
-        { id: "n6", label: "Superficies por rol", sub: "PWA · BI · finanzas" },
+        { id: "n5", label: "Producción validada", sub: "verificada y rastreable" },
+        { id: "n6", label: "Visto según el rol", sub: "PWA · BI · finanzas" },
       ],
       principles: [
         {
-          title: "La idempotencia no es opcional",
-          body: "Los dispositivos de campo reintentan con mala conectividad. Toda ruta de escritura que construyo —captura de empaque, envíos de WhatsApp, intake de webhooks— va blindada contra doble envío, porque en campo el reintento es el caso normal, no el borde.",
+          title: "Un registro nunca debe guardarse dos veces",
+          body: "Repartidores y operadores trabajan donde se cae la señal. Cuando la app no recibe respuesta, reintenta — y un sistema descuidado registra la misma entrega, o manda el mismo mensaje, dos veces. Por eso cada guardado que construyo primero revisa si ya ocurrió. El nombre técnico es idempotencia; en piso es la diferencia entre un inventario que cuadra y uno que no.",
         },
         {
-          title: "Una sola verdad, varias superficies",
-          body: "Un operador, un gerente de planta y finanzas necesitan distinto detalle y distinto permiso sobre los mismos datos. Construyo una sola lógica y una sola verdad, y la presento por rol — en vez de dejar que un tablero se vuelva, calladito, el sistema de registro.",
+          title: "Todos ven el mismo número, cada quien con su nivel de detalle",
+          body: "Un operador, un gerente de planta y finanzas necesitan la misma cifra de producción — pero no el mismo detalle ni los mismos permisos. La calculo una vez y la presento distinto según el rol, en vez de dejar que un tablero se vuelva, calladito, una segunda versión de la verdad. Una sola verdad, varias superficies.",
         },
         {
-          title: "Correcto desde el origen",
-          body: "Zonas horarias, redondeo de impuestos, scoping por compañía. Un corte diario que calcula el 'hoy' en UTC va a estar mal todos los días hasta que se arregle donde se escribe el dato, no parchado en el reporte.",
+          title: "Corrige el dato donde nace, no en el reporte",
+          body: "Un corte diario que decide qué significa 'hoy' en la zona horaria equivocada va a estar mal todos los días. Igual con el redondeo de impuestos o a qué empresa pertenece un registro. Parchar el reporte esconde el error; arreglarlo donde se escribe el dato lo elimina.",
         },
       ],
     },

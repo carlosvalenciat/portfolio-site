@@ -3,6 +3,7 @@
 import { useId, useState } from "react";
 import type { Project } from "@/lib/content";
 import SpotlightCard from "./SpotlightCard";
+import ProjectSignature from "./ProjectSignature";
 
 type Labels = {
   roleLabel: string;
@@ -23,16 +24,24 @@ type Labels = {
 export default function ProjectCard({
   project,
   labels,
+  territory,
+  featured = false,
 }: {
   project: Project;
   labels: Labels;
+  territory: string;
+  featured?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const panelId = useId();
 
   return (
-    <SpotlightCard className="h-full">
-      <article className="card h-full transition-colors duration-150 hover:border-border-bright">
+    <SpotlightCard className="h-full" featured={featured}>
+      <article className={`card project-card h-full transition-colors duration-150 hover:border-border-bright ${featured ? "project-card--featured" : ""}`}>
+        <div className="project-card__territory" aria-label={territory}>
+          <span aria-hidden="true" />
+          {territory}
+        </div>
         <div className="rail-grid p-6 sm:p-8">
           {/* ── Metadata rail ─────────────────────────────── */}
           <div className="flex flex-row flex-wrap gap-x-6 gap-y-2 md:flex-col md:gap-y-5">
@@ -75,6 +84,8 @@ export default function ProjectCard({
             <p className="t-lead measure mt-4 text-fg-muted">
               {project.summary}
             </p>
+
+            {featured && <ProjectSignature projectId={project.id} />}
 
             <ul className="mt-6 flex flex-wrap gap-1.5">
               {project.stack.map((tech) => (

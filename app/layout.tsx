@@ -1,18 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, JetBrains_Mono } from "next/font/google";
+import { GeistSans } from "geist/font/sans";
+import "@fontsource-variable/jetbrains-mono/wght.css";
 import "./globals.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
-
-const jetbrains = JetBrains_Mono({
-  subsets: ["latin"],
-  variable: "--font-mono-jb",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://cvalenciat.dev"),
@@ -50,7 +39,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${jetbrains.variable}`}>
+    <html lang="en" className={GeistSans.variable}>
       <head>
         {/* Without JS the scroll-reveal system never runs, so every
             .gs-reveal would stay at opacity 0. Reverse it here rather

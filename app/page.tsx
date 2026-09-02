@@ -12,6 +12,30 @@ import Pipeline from "@/components/Pipeline";
 import ProjectCard from "@/components/ProjectCard";
 import SpotlightCard from "@/components/SpotlightCard";
 import StreamLog from "@/components/StreamLog";
+import HeroSystem from "@/components/HeroSystem";
+import IntegrationScene from "@/components/IntegrationScene";
+import CircuitBackdrop from "@/components/CircuitBackdrop";
+
+const FEATURED_PROJECTS = new Set([
+  "odoo-erp",
+  "koldplant",
+  "ops-pwa",
+  "conversational-commerce",
+  "ai-agents",
+]);
+
+const TERRITORY_BY_PROJECT: Record<string, "erp" | "ai" | "automation" | "industrial"> = {
+  "odoo-erp": "erp",
+  koldplant: "industrial",
+  "ops-pwa": "industrial",
+  koldhome: "erp",
+  "b2b-pwa": "erp",
+  "power-platform": "automation",
+  "conversational-commerce": "ai",
+  "ai-agents": "ai",
+  ofertin: "automation",
+  marketplace: "automation",
+};
 
 const UI = {
   en: {
@@ -31,6 +55,16 @@ const UI = {
     copyCmd: "Copy email address",
     openGithub: "Open GitHub profile",
     section: "section",
+    featured: "Featured systems",
+    archive: "More shipped work",
+    viewAll: "View all 10 projects",
+    showLess: "Show featured projects",
+    territories: {
+      erp: "ERP & Integration",
+      ai: "AI & Agents",
+      automation: "Automation & Platforms",
+      industrial: "Industrial Systems",
+    },
   },
   es: {
     more: "Leer el case study",
@@ -49,12 +83,23 @@ const UI = {
     copyCmd: "Copiar correo",
     openGithub: "Abrir perfil de GitHub",
     section: "sección",
+    featured: "Sistemas destacados",
+    archive: "Más proyectos entregados",
+    viewAll: "Ver los 10 proyectos",
+    showLess: "Mostrar proyectos destacados",
+    territories: {
+      erp: "ERP e Integración",
+      ai: "IA y Agentes",
+      automation: "Automatización y Plataformas",
+      industrial: "Sistemas Industriales",
+    },
   },
 };
 
 export default function Home() {
   const [lang, setLang] = useState<Lang>("en");
   const [copied, setCopied] = useState(false);
+  const [showAllProjects, setShowAllProjects] = useState(false);
   const scope = useRef<HTMLDivElement>(null);
   const t = dict[lang];
   const ui = UI[lang];
@@ -139,7 +184,8 @@ export default function Home() {
   }, [sections, lang, ui, t.contact.email]);
 
   return (
-    <div ref={scope}>
+    <div ref={scope} className="site-shell">
+      <CircuitBackdrop />
       <a
         href="#work"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-chip focus:bg-surface-2 focus:px-4 focus:py-2 focus:text-sm focus:text-fg"
@@ -173,16 +219,18 @@ export default function Home() {
               ))}
             </ul>
 
-            <CommandPalette
-              commands={commands}
-              lang={lang}
-              copy={{
-                title: ui.cmdTitle,
-                placeholder: ui.cmdPlaceholder,
-                empty: ui.cmdEmpty,
-                open: ui.cmdOpen,
-              }}
-            />
+            <div className="hidden sm:block">
+              <CommandPalette
+                commands={commands}
+                lang={lang}
+                copy={{
+                  title: ui.cmdTitle,
+                  placeholder: ui.cmdPlaceholder,
+                  empty: ui.cmdEmpty,
+                  open: ui.cmdOpen,
+                }}
+              />
+            </div>
 
             <div
               className="flex items-center rounded-chip border border-control bg-surface p-0.5"
@@ -216,50 +264,45 @@ export default function Home() {
             <SignalField />
           </div>
 
-          <div className="relative mx-auto max-w-5xl px-5 py-28 sm:px-8 sm:py-40">
-            <Reveal group="hero">
-              <p className="t-label text-accent">{t.hero.eyebrow}</p>
-            </Reveal>
+          <div className="relative mx-auto max-w-6xl px-5 py-24 sm:px-8 sm:py-36">
+            <div className="hero-layout">
+              <div className="relative z-10">
+                <Reveal group="hero">
+                  <p className="t-label text-accent">{t.hero.eyebrow}</p>
+                </Reveal>
 
-            {/* Signature: the headline reconciles rather than fading in. */}
-            <div className="mt-7">
-              <HeroReconcile text={t.hero.name} />
+                <div className="mt-7">
+                  <HeroReconcile text={t.hero.name} />
+                </div>
+
+                <Reveal group="hero">
+                  <p className="t-role mt-5 text-fg-muted">{t.hero.role}</p>
+                </Reveal>
+                <Reveal group="hero">
+                  <p className="t-lead measure mt-9 text-fg-muted">{t.hero.pitch}</p>
+                </Reveal>
+                <Reveal group="hero">
+                  <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12.5px] text-fg-muted">
+                    <span>{t.hero.location}</span>
+                    <span aria-hidden="true" className="text-border-bright">/</span>
+                    <span>{t.hero.languages}</span>
+                  </div>
+                </Reveal>
+                <Reveal group="hero">
+                  <div className="mt-12 flex flex-wrap gap-3">
+                    <a href="#work" data-magnetic className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip bg-accent px-6 text-sm font-semibold text-on-accent shadow-e2 transition-[filter] duration-150 hover:brightness-110">
+                      {t.hero.ctaWork}
+                    </a>
+                    <a href="#contact" className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors duration-150 hover:border-accent hover:text-accent">
+                      {t.hero.ctaContact}
+                    </a>
+                  </div>
+                </Reveal>
+              </div>
+              <Reveal group="hero" className="hero-layout__visual">
+                <HeroSystem />
+              </Reveal>
             </div>
-
-            <Reveal group="hero">
-              <p className="t-role mt-5 text-fg-muted">{t.hero.role}</p>
-            </Reveal>
-            <Reveal group="hero">
-              <p className="t-lead measure mt-9 text-fg-muted">{t.hero.pitch}</p>
-            </Reveal>
-            <Reveal group="hero">
-              {/* fg-muted rather than fg-dim: this line sits on the signal
-                  field, where fg-dim measures 3.15:1 and fails. */}
-              <div className="mt-9 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[12.5px] text-fg-muted">
-                <span>{t.hero.location}</span>
-                <span aria-hidden="true" className="text-border-bright">
-                  /
-                </span>
-                <span>{t.hero.languages}</span>
-              </div>
-            </Reveal>
-            <Reveal group="hero">
-              <div className="mt-12 flex flex-wrap gap-3">
-                <a
-                  href="#work"
-                  data-magnetic
-                  className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip bg-accent px-6 text-sm font-semibold text-on-accent shadow-e2 transition-[filter] duration-150 hover:brightness-110"
-                >
-                  {t.hero.ctaWork}
-                </a>
-                <a
-                  href="#contact"
-                  className="inline-flex min-h-[48px] cursor-pointer items-center rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors duration-150 hover:border-accent hover:text-accent"
-                >
-                  {t.hero.ctaContact}
-                </a>
-              </div>
-            </Reveal>
           </div>
         </section>
 
@@ -303,11 +346,19 @@ export default function Home() {
               </p>
             </Reveal>
 
+            <div className="mt-10 flex flex-wrap gap-2" aria-label={ui.featured}>
+              {Object.entries(ui.territories).map(([key, label]) => (
+                <span key={key} className={`territory-key territory-key--${key}`}>{label}</span>
+              ))}
+            </div>
+
             <div className="mt-14 flex flex-col gap-5">
-              {t.projects.map((project, i) => (
+              {t.projects.filter((project) => showAllProjects || FEATURED_PROJECTS.has(project.id)).map((project, i) => (
                 <Reveal key={project.id} group={`work-${Math.floor(i / 2)}`}>
                   <ProjectCard
                     project={project}
+                    featured={FEATURED_PROJECTS.has(project.id)}
+                    territory={ui.territories[TERRITORY_BY_PROJECT[project.id]]}
                     labels={{
                       roleLabel: t.work.roleLabel,
                       problemLabel: t.work.problemLabel,
@@ -318,6 +369,17 @@ export default function Home() {
                   />
                 </Reveal>
               ))}
+            </div>
+            <div className="mt-10 flex justify-center">
+              <button
+                type="button"
+                onClick={() => setShowAllProjects((value) => !value)}
+                aria-expanded={showAllProjects}
+                className="inline-flex min-h-[48px] items-center gap-3 rounded-chip border border-control px-6 text-sm font-medium text-fg transition-colors hover:border-accent hover:text-accent"
+              >
+                {showAllProjects ? ui.showLess : ui.viewAll}
+                <span aria-hidden="true" className={`transition-transform ${showAllProjects ? "rotate-180" : ""}`}>↓</span>
+              </button>
             </div>
           </div>
         </section>
@@ -335,6 +397,10 @@ export default function Home() {
               <p className="measure mt-5 text-[15px] leading-relaxed text-fg-muted">
                 {t.how.note}
               </p>
+            </Reveal>
+
+            <Reveal className="mt-14">
+              <IntegrationScene lang={lang} />
             </Reveal>
 
             <div className="mt-14 grid gap-5 lg:grid-cols-3">
